@@ -225,7 +225,7 @@ class Blueprint
      * @param Kirby\Cms\Model $model
      * @return self
      */
-    public static function factory(string $name, string $fallback = null, Model $model): self
+    public static function factory(string $name, string $fallback = null, Model $model)
     {
         try {
             $props = static::load($name);
@@ -354,7 +354,7 @@ class Blueprint
      *
      * @return Kirby\Cms\Model
      */
-    public function model(): Model
+    public function model()
     {
         return $this->model;
     }

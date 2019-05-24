@@ -280,7 +280,7 @@ class Url
      * @param string $url
      * @return Kirby\Http\Uri
      */
-    public static function toObject($url = null): Uri
+    public static function toObject($url = null)
     {
         return $url === null ? Uri::current() : new Uri($url);
     }

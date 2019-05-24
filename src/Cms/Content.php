@@ -219,7 +219,7 @@ class Content
      *
      * @return Kirby\Cms\Model
      */
-    public function parent(): Model
+    public function parent()
     {
         return $this->parent;
     }

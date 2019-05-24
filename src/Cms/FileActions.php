@@ -81,7 +81,7 @@ trait FileActions
      * @param integer $sort
      * @return self
      */
-    public function changeSort(int $sort): self
+    public function changeSort(int $sort)
     {
         return $this->commit('changeSort', [$this, $sort], function ($file, $sort) {
             return $file->save(['sort' => $sort]);
@@ -121,7 +121,7 @@ trait FileActions
      * @param Page $page
      * @return File
      */
-    public function copy(Page $page): File
+    public function copy(Page $page)
     {
         F::copy($this->root(), $page->root() . '/' . $this->filename());
 

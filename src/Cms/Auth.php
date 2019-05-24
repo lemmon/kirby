@@ -61,7 +61,7 @@ class Auth
      * @param Kirby\Http\Request\Auth\BasicAuth|null $auth
      * @return Kirby\Cms\User|null
      */
-    public function currentUserFromBasicAuth(BasicAuth $auth = null): ?User
+    public function currentUserFromBasicAuth(BasicAuth $auth = null)
     {
         if ($this->kirby->option('api.basicAuth', false) !== true) {
             throw new PermissionException('Basic authentication is not activated');
@@ -96,7 +96,7 @@ class Auth
      * @param Kirby\Cms\Session|array|null $session
      * @return Kirby\Cms\User|null
      */
-    public function currentUserFromSession($session = null): ?User
+    public function currentUserFromSession($session = null)
     {
         // use passed session options or session object if set
         if (is_array($session) === true) {
@@ -130,7 +130,7 @@ class Auth
      * @param string|null $who
      * @return Kirby\Cms\User|null
      */
-    public function impersonate(string $who = null): ?User
+    public function impersonate(string $who = null)
     {
         switch ($who) {
             case null:

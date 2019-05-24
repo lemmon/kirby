@@ -132,7 +132,7 @@ class ContentLock
      *
      * @return Kirby\Cms\App
      */
-    protected function kirby(): App
+    protected function kirby()
     {
         return $this->model->kirby();
     }
@@ -209,7 +209,7 @@ class ContentLock
      *
      * @return Kirby\Cms\User
      */
-    protected function user(): User
+    protected function user()
     {
         if ($user = $this->kirby()->user()) {
             return $user;

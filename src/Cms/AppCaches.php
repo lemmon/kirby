@@ -25,7 +25,7 @@ trait AppCaches
      * @param string $key
      * @return Kirby\Cache\Cache
      */
-    public function cache(string $key): Cache
+    public function cache(string $key)
     {
         if (isset($this->caches[$key]) === true) {
             return $this->caches[$key];

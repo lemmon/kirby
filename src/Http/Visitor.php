@@ -86,7 +86,7 @@ class Visitor
      *
      * @return Kirby\Toolkit\Collection
      */
-    public function acceptedLanguages(): Collection
+    public function acceptedLanguages()
     {
         $accepted  = Str::accepted($this->acceptedLanguage);
         $languages = [];
@@ -152,7 +152,7 @@ class Visitor
      *
      * @return Kirby\Toolkit\Collection
      */
-    public function acceptedMimeTypes(): Collection
+    public function acceptedMimeTypes()
     {
         $accepted = Str::accepted($this->acceptedMimeType);
         $mimes    = [];

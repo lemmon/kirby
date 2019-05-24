@@ -54,7 +54,7 @@ class KirbyTag extends \Kirby\Text\KirbyTag
      *
      * @return Kirby\Cms\Model|null
      */
-    public function parent(): ?Model
+    public function parent()
     {
         return $this->data['parent'];
     }

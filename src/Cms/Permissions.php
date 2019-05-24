@@ -111,7 +111,7 @@ class Permissions
         return array_key_exists($category, $this->actions) === true;
     }
 
-    protected function setAction(string $category, string $action, $setting): self
+    protected function setAction(string $category, string $action, $setting)
     {
         // wildcard to overwrite the entire category
         if ($action === '*') {
@@ -123,7 +123,7 @@ class Permissions
         return $this;
     }
 
-    protected function setAll(bool $setting): self
+    protected function setAll(bool $setting)
     {
         foreach ($this->actions as $categoryName => $actions) {
             $this->setCategory($categoryName, $setting);
@@ -132,7 +132,7 @@ class Permissions
         return $this;
     }
 
-    protected function setCategories(array $settings): self
+    protected function setCategories(array $settings)
     {
         foreach ($settings as $categoryName => $categoryActions) {
             if (is_bool($categoryActions) === true) {
@@ -149,7 +149,7 @@ class Permissions
         return $this;
     }
 
-    protected function setCategory(string $category, bool $setting): self
+    protected function setCategory(string $category, bool $setting)
     {
         if ($this->hasCategory($category) === false) {
             throw new InvalidArgumentException('Invalid permissions category');

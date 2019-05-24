@@ -54,6 +54,7 @@ class App
     protected $defaultLanguage;
     protected $language;
     protected $languages;
+    protected $locks;
     protected $multilang;
     protected $options;
     protected $path;
@@ -704,6 +705,21 @@ class App
         }
 
         return $this->languages = Languages::load();
+    }
+
+    /**
+     * Returns the app's locks object
+     *
+     * @return ContentLocks
+     */
+    public function locks(): ContentLocks
+    {
+        return new ContentLocks;
+        if ($this->locks !== null) {
+            return $this->locks;
+        }
+
+        return $this->locks = new ContentLocks;
     }
 
     /**

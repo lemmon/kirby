@@ -58,7 +58,7 @@ trait HasFiles
      * @param array $props
      * @return Kirby\Cms\File
      */
-    public function createFile(array $props): File
+    public function createFile(array $props)
     {
         $props = array_merge($props, [
             'parent' => $this,
@@ -85,7 +85,7 @@ trait HasFiles
      * @param string $in
      * @return Kirby\Cms\File|null
      */
-    public function file(string $filename = null, string $in = 'files'): ?File
+    public function file(string $filename = null, string $in = 'files')
     {
         if ($filename === null) {
             return $this->$in()->first();
@@ -185,7 +185,7 @@ trait HasFiles
      * @param string $filename
      * @return Kirby\Cms\File|null
      */
-    public function image(string $filename = null): ?File
+    public function image(string $filename = null)
     {
         return $this->file($filename, 'images');
     }
