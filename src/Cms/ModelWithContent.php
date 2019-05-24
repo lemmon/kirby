@@ -239,7 +239,7 @@ abstract class ModelWithContent extends Model
     /**
      * Returns the lock object for this model
      *
-     * @return ContentLock
+     * @return Kirby\Cms\ContentLock
      */
     public function lock()
     {

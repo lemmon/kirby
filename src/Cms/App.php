@@ -710,9 +710,9 @@ class App
     /**
      * Returns the app's locks object
      *
-     * @return ContentLocks
+     * @return Kirby\Cms\ContentLocks
      */
-    public function locks(): ContentLocks
+    public function locks()
     {
         return new ContentLocks;
         if ($this->locks !== null) {
