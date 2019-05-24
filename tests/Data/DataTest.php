@@ -72,37 +72,16 @@ class DataTest extends TestCase
             'email' => 'homer@simpson.com'
         ];
 
-        $encodedJson = Data::encode($data, 'json');
-        $this->assertEquals(Json::encode($data), $encodedJson);
+        $handlers = ['json', 'yml', 'txt'];
 
-        $encodedYaml = Data::encode($data, 'yaml');
-        $this->assertEquals(Yaml::encode($data), $encodedYaml);
+        foreach ($handlers as $handler) {
+            $encoded = Data::encode($data, $handler);
+            $decoded = Data::decode($encoded, $handler);
 
-        $this->assertEquals($data, Data::decode($encodedJson, 'json'));
-        $this->assertEquals($data, Data::decode($encodedYaml, 'yaml'));
+            $this->assertEquals($data, $decoded);
+        }
     }
 
-    /**
-     * @covers ::encode
-     * @covers ::handler
-     */
-    public function testEncodeInvalid()
-    {
-        $this->expectException('Exception');
-        $this->expectExceptionMessage('Missing handler for type: "foo"');
-
-        $data = [
-            'name'  => 'Homer Simpson',
-            'email' => 'homer@simpson.com'
-        ];
-
-        Data::encode($data, 'foo');
-    }
-
-    /**
-     * @covers ::read
-     * @covers ::write
-     */
     public function testReadWrite()
     {
         $data = [

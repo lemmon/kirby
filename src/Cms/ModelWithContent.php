@@ -54,7 +54,7 @@ abstract class ModelWithContent extends Model
      * @param string $languageCode
      * @return Kirby\Cms\Content
      */
-    public function content(string $languageCode = null): Content
+    public function content(string $languageCode = null)
     {
 
         // single language support

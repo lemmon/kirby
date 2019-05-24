@@ -3,7 +3,11 @@
 use Kirby\Toolkit\A;
 
 return [
-    'mixins' => ['min'],
+    'mixins' => [
+        'filepicker',
+        'min',
+        'upload'
+    ],
     'props' => [
         /**
          * Unset inherited props
@@ -71,7 +75,7 @@ return [
         },
 
         /**
-         * Query for the files to be included
+         * Query for the files to be included in the picker
          */
         'query' => function (string $query = null) {
             return $query;
@@ -118,22 +122,12 @@ return [
     ],
     'methods' => [
         'fileResponse' => function ($file) {
-            $image = $file->panelImage($this->image);
-            $model = $this->model();
-            $uuid  = $file->parent() === $model ? $file->filename() : $file->id();
-
-            return [
-                'filename' => $file->filename(),
-                'text'     => $file->toString($this->text),
-                'link'     => $file->panelUrl(true),
-                'id'       => $file->id(),
-                'uuid'     => $uuid,
-                'url'      => $file->url(),
-                'info'     => $file->toString($this->info ?? false),
-                'image'    => $image,
-                'icon'     => $file->panelIcon($image),
-                'type'     => $file->type(),
-            ];
+            return $file->panelPickerData([
+                'image' => $this->image,
+                'info'  => $this->info ?? false,
+                'model' => $this->model(),
+                'text'  => $this->text,
+            ]);
         },
         'toFiles' => function ($value = null) {
             $files = [];
@@ -157,14 +151,29 @@ return [
                 'pattern' => '/',
                 'action' => function () {
                     $field = $this->field();
-                    $files = $field->model()->query($field->query(), 'Kirby\Cms\Files');
-                    $data  = [];
 
-                    foreach ($files as $index => $file) {
-                        $data[] = $field->fileResponse($file);
-                    }
+                    return $field->filepicker([
+                        'query' => $field->query(),
+                        'image' => $field->image(),
+                        'info'  => $field->info(),
+                        'text'  => $field->text()
+                    ]);
+                }
+            ],
+            [
+                'pattern' => 'upload',
+                'action' => function () {
+                    $field   = $this->field();
+                    $uploads = $field->uploads();
 
-                    return $data;
+                    return $field->upload($this, $uploads, function ($file) use ($field) {
+                        return $file->panelPickerData([
+                            'image' => $field->image(),
+                            'info'  => $field->info(),
+                            'model' => $field->model(),
+                            'text'  => $field->text(),
+                        ]);
+                    });
                 }
             ]
         ];

@@ -7,7 +7,6 @@ use Kirby\Exception\PermissionException;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\NotFoundException;
 use Kirby\Http\Request\Auth\BasicAuth;
-use Kirby\Session\Session;
 use Throwable;
 
 /**
@@ -59,8 +58,8 @@ class Auth
      * for a basic authentication header with
      * valid credentials
      *
-     * @param BasicAuth|null $auth
-     * @return User|null
+     * @param Kirby\Http\Request\Auth\BasicAuth|null $auth
+     * @return Kirby\Cms\User|null
      */
     public function currentUserFromBasicAuth(BasicAuth $auth = null): ?User
     {
@@ -317,10 +316,10 @@ class Auth
     /**
      * Validates the currently logged in user
      *
-     * @param array|Session|null $session
+     * @param array|Kirby\Session\Session|null $session
      * @return User|null
      */
-    public function user($session = null): ?User
+    public function user($session = null)
     {
         if ($this->impersonate !== null) {
             return $this->impersonate;

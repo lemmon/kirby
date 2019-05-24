@@ -138,6 +138,11 @@ class Language extends Model
         $kirby = App::instance();
         $site  = $kirby->site();
 
+        // convert site
+        foreach ($site->files() as $file) {
+            F::move($file->contentFile($from, true), $file->contentFile($to, true));
+        }
+
         F::move($site->contentFile($from, true), $site->contentFile($to, true));
 
         // convert all pages
@@ -168,7 +173,7 @@ class Language extends Model
      * @param array $props
      * @return self
      */
-    public static function create(array $props): self
+    public static function create(array $props)
     {
         $props['code'] = Str::slug($props['code'] ?? null);
         $kirby         = App::instance();
@@ -351,9 +356,9 @@ class Language extends Model
      * which is used to handle language specific
      * routes.
      *
-     * @return LanguageRouter
+     * @return Kirby\Cms\LanguageRouter
      */
-    public function router(): LanguageRouter
+    public function router()
     {
         return new LanguageRouter($this);
     }
@@ -389,7 +394,7 @@ class Language extends Model
      * @internal
      * @return self
      */
-    public function save(): self
+    public function save()
     {
         try {
             $existingData = Data::read($this->root());
@@ -420,7 +425,7 @@ class Language extends Model
      * @param string $code
      * @return self
      */
-    protected function setCode(string $code): self
+    protected function setCode(string $code)
     {
         $this->code = $code;
         return $this;
@@ -430,7 +435,7 @@ class Language extends Model
      * @param boolean $default
      * @return self
      */
-    protected function setDefault(bool $default = false): self
+    protected function setDefault(bool $default = false)
     {
         $this->default = $default;
         return $this;
@@ -440,7 +445,7 @@ class Language extends Model
      * @param string $direction
      * @return self
      */
-    protected function setDirection(string $direction = 'ltr'): self
+    protected function setDirection(string $direction = 'ltr')
     {
         $this->direction = $direction === 'rtl' ? 'rtl' : 'ltr';
         return $this;
@@ -450,7 +455,7 @@ class Language extends Model
      * @param string|array $locale
      * @return self
      */
-    protected function setLocale($locale = null): self
+    protected function setLocale($locale = null)
     {
         if (is_array($locale)) {
             $this->locale = $locale;
@@ -469,7 +474,7 @@ class Language extends Model
      * @param string $name
      * @return self
      */
-    protected function setName(string $name = null): self
+    protected function setName(string $name = null)
     {
         $this->name = $name ?? $this->code;
         return $this;
@@ -479,7 +484,7 @@ class Language extends Model
      * @param array $slug
      * @return self
      */
-    protected function setSlugs(array $slugs = null): self
+    protected function setSlugs(array $slugs = null)
     {
         $this->slugs = $slugs ?? [];
         return $this;
@@ -489,7 +494,7 @@ class Language extends Model
      * @param array $translations
      * @return self
      */
-    protected function setTranslations(array $translations = null): self
+    protected function setTranslations(array $translations = null)
     {
         $this->translations = $translations ?? [];
         return $this;
@@ -499,7 +504,7 @@ class Language extends Model
      * @param string $url
      * @return self
      */
-    protected function setUrl(string $url = null): self
+    protected function setUrl(string $url = null)
     {
         $this->url = $url;
         return $this;
@@ -561,7 +566,7 @@ class Language extends Model
      * @param array $props
      * @return self
      */
-    public function update(array $props = null): self
+    public function update(array $props = null)
     {
         $props['slug'] = Str::slug($props['slug'] ?? null);
         $kirby         = App::instance();

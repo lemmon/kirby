@@ -26,7 +26,7 @@ trait HasFiles
      *
      * @return Kirby\Cms\Files
      */
-    public function audio(): Files
+    public function audio()
     {
         return $this->files()->filterBy('type', '==', 'audio');
     }
@@ -36,7 +36,7 @@ trait HasFiles
      *
      * @return Kirby\Cms\Files
      */
-    public function code(): Files
+    public function code()
     {
         return $this->files()->filterBy('type', '==', 'code');
     }
@@ -73,7 +73,7 @@ trait HasFiles
      *
      * @return Kirby\Cms\Files
      */
-    public function documents(): Files
+    public function documents()
     {
         return $this->files()->filterBy('type', '==', 'document');
     }
@@ -110,7 +110,7 @@ trait HasFiles
      *
      * @return Kirby\Cms\Files
      */
-    public function files(): Files
+    public function files()
     {
         if (is_a($this->files, 'Kirby\Cms\Files') === true) {
             return $this->files;
@@ -195,7 +195,7 @@ trait HasFiles
      *
      * @return Kirby\Cms\Files
      */
-    public function images(): Files
+    public function images()
     {
         return $this->files()->filterBy('type', '==', 'image');
     }
@@ -206,7 +206,7 @@ trait HasFiles
      * @param Kirby\Cms\Files|null $files
      * @return self
      */
-    protected function setFiles(array $files = null): self
+    protected function setFiles(array $files = null)
     {
         if ($files !== null) {
             $this->files = Files::factory($files, $this);
@@ -220,7 +220,7 @@ trait HasFiles
      *
      * @return Kirby\Cms\Files
      */
-    public function videos(): Files
+    public function videos()
     {
         return $this->files()->filterBy('type', '==', 'video');
     }

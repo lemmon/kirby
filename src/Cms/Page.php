@@ -30,6 +30,7 @@ class Page extends ModelWithContent
     use HasChildren;
     use HasFiles;
     use HasMethods;
+    use HasPanelImage;
     use HasSiblings;
 
     /**
@@ -224,7 +225,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\PageBlueprint
      */
-    public function blueprint(): PageBlueprint
+    public function blueprint()
     {
         if (is_a($this->blueprint, 'Kirby\Cms\PageBlueprint') === true) {
             return $this->blueprint;
@@ -434,7 +435,7 @@ class Page extends ModelWithContent
      * @internal
      * @return self
      */
-    public static function factory($props): self
+    public static function factory($props)
     {
         if (empty($props['model']) === false) {
             return static::model($props['model'], $props);
@@ -479,7 +480,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\Template
      */
-    public function intendedTemplate(): Template
+    public function intendedTemplate()
     {
         if ($this->intendedTemplate !== null) {
             return $this->intendedTemplate;
@@ -723,6 +724,15 @@ class Page extends ModelWithContent
     }
 
     /**
+     * @deprecated 3.0.0 Use `Page::isUnlisted()` intead
+     * @return bool
+     */
+    public function isInvisible(): bool
+    {
+        return $this->isUnlisted();
+    }
+
+    /**
      * Checks if the page has a sorting number
      *
      * @return boolean
@@ -772,6 +782,15 @@ class Page extends ModelWithContent
     public function isUnlisted(): bool
     {
         return $this->isListed() === false;
+    }
+
+    /**
+     * @deprecated 3.0.0 Use `Page::isListed()` intead
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return $this->isListed();
     }
 
     /**
@@ -828,7 +847,7 @@ class Page extends ModelWithContent
      * @param array $props
      * @return self
      */
-    public static function model(string $name, array $props = []): self
+    public static function model(string $name, array $props = [])
     {
         if ($class = (static::$models[$name] ?? null)) {
             $object = new $class($props);
@@ -904,40 +923,6 @@ class Page extends ModelWithContent
     }
 
     /**
-     * @internal
-     * @param string|array|false $settings
-     * @return array|null
-     */
-    public function panelImage($settings = null): ?array
-    {
-        $defaults = [
-            'ratio' => '3/2',
-            'back'  => 'pattern',
-            'cover' => false
-        ];
-
-        // switch the image off
-        if ($settings === false) {
-            return null;
-        }
-
-        if (is_string($settings) === true) {
-            $settings = [
-                'query' => $settings
-            ];
-        }
-
-        if ($image = $this->query($settings['query'] ?? 'page.image', 'Kirby\Cms\File')) {
-            $settings['url']    = $image->thumb([ "width" => 128, "height" => 128])->url(true) . '?t=' . $image->modified();
-            $settings['srcset'] = $image->srcset([128, 256, 512, 768, 1024, 2048]);
-
-            unset($settings['query']);
-        }
-
-        return array_merge($defaults, (array)$settings);
-    }
-
-    /**
      * Returns the full path without leading slash
      *
      * @internal
@@ -969,7 +954,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\Page|null
      */
-    public function parent(): ?Page
+    public function parent()
     {
         return $this->parent;
     }
@@ -1007,7 +992,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\Pages
      */
-    public function parents(): Pages
+    public function parents()
     {
         $parents = new Pages;
         $page    = $this->parent();
@@ -1025,7 +1010,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\PagePermissions
      */
-    public function permissions(): PagePermissions
+    public function permissions()
     {
         return new PagePermissions($this);
     }
@@ -1156,7 +1141,7 @@ class Page extends ModelWithContent
      * @internal
      * @return Kirby\Cms\Template
      */
-    public function representation($type): Template
+    public function representation($type)
     {
         $kirby          = $this->kirby();
         $template       = $this->template();
@@ -1187,7 +1172,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\PageRules
      */
-    protected function rules(): PageRules
+    protected function rules()
     {
         return new PageRules();
     }
@@ -1199,7 +1184,7 @@ class Page extends ModelWithContent
      * @param array $params
      * @return Kirby\Cms\Pages
      */
-    public function search(string $query = null, $params = []): Pages
+    public function search(string $query = null, $params = [])
     {
         return $this->index()->search($query, $params);
     }
@@ -1210,7 +1195,7 @@ class Page extends ModelWithContent
      * @param array|null $blueprint
      * @return self
      */
-    protected function setBlueprint(array $blueprint = null): self
+    protected function setBlueprint(array $blueprint = null)
     {
         if ($blueprint !== null) {
             $blueprint['model'] = $this;
@@ -1228,7 +1213,7 @@ class Page extends ModelWithContent
      * @param string $dirname
      * @return self
      */
-    protected function setDirname(string $dirname = null): self
+    protected function setDirname(string $dirname = null)
     {
         $this->dirname = $dirname;
         return $this;
@@ -1240,7 +1225,7 @@ class Page extends ModelWithContent
      * @param boolean $isDraft
      * @return self
      */
-    protected function setIsDraft(bool $isDraft = null): self
+    protected function setIsDraft(bool $isDraft = null)
     {
         $this->isDraft = $isDraft ?? false;
         return $this;
@@ -1252,7 +1237,7 @@ class Page extends ModelWithContent
      * @param integer $num
      * @return self
      */
-    protected function setNum(int $num = null): self
+    protected function setNum(int $num = null)
     {
         $this->num = $num === null ? $num : intval($num);
         return $this;
@@ -1264,7 +1249,7 @@ class Page extends ModelWithContent
      * @param Kirby\Cms\Page|null $parent
      * @return self
      */
-    protected function setParent(Page $parent = null): self
+    protected function setParent(Page $parent = null)
     {
         $this->parent = $parent;
         return $this;
@@ -1276,7 +1261,7 @@ class Page extends ModelWithContent
      * @param string|null $root
      * @return self
      */
-    protected function setRoot(string $root = null): self
+    protected function setRoot(string $root = null)
     {
         $this->root = $root;
         return $this;
@@ -1288,7 +1273,7 @@ class Page extends ModelWithContent
      * @param string $slug
      * @return self
      */
-    protected function setSlug(string $slug): self
+    protected function setSlug(string $slug)
     {
         $this->slug = $slug;
         return $this;
@@ -1300,7 +1285,7 @@ class Page extends ModelWithContent
      * @param string $template
      * @return self
      */
-    protected function setTemplate(string $template = null): self
+    protected function setTemplate(string $template = null)
     {
         if ($template !== null) {
             $this->intendedTemplate = $this->kirby()->template($template);
@@ -1315,7 +1300,7 @@ class Page extends ModelWithContent
      * @param string $url
      * @return self
      */
-    protected function setUrl(string $url = null): self
+    protected function setUrl(string $url = null)
     {
         if (is_string($url) === true) {
             $url = rtrim($url, '/');
@@ -1370,7 +1355,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\Template
      */
-    public function template(): Template
+    public function template()
     {
         if ($this->template !== null) {
             return $this->template;
@@ -1390,7 +1375,7 @@ class Page extends ModelWithContent
      *
      * @return Kirby\Cms\Field
      */
-    public function title(): Field
+    public function title()
     {
         return $this->content()->get('title')->or($this->slug());
     }

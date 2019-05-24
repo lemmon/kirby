@@ -28,7 +28,7 @@ trait FileActions
      * @param bool $sanitize
      * @return self
      */
-    public function changeName(string $name, bool $sanitize = true): self
+    public function changeName(string $name, bool $sanitize = true)
     {
         if ($sanitize === true) {
             $name = F::safeName($name);
@@ -116,6 +116,29 @@ trait FileActions
     }
 
     /**
+     * Copy the file to the given page
+     *
+     * @param Page $page
+     * @return File
+     */
+    public function copy(Page $page): File
+    {
+        F::copy($this->root(), $page->root() . '/' . $this->filename());
+
+        if ($this->kirby()->multilang() === true) {
+            foreach ($this->kirby()->languages() as $language) {
+                $contentFile = $this->contentFile($language->code());
+                F::copy($contentFile, $page->root() . '/' . basename($contentFile));
+            }
+        } else {
+            $contentFile = $this->contentFile();
+            F::copy($contentFile, $page->root() . '/' . basename($contentFile));
+        }
+
+        return $page->clone()->file($this->filename());
+    }
+
+    /**
      * Creates a new file on disk and returns the
      * File object. The store is used to handle file
      * writing, so it can be replaced by any other
@@ -124,7 +147,7 @@ trait FileActions
      * @param array $props
      * @return self
      */
-    public static function create(array $props): self
+    public static function create(array $props)
     {
         if (isset($props['source'], $props['parent']) === false) {
             throw new InvalidArgumentException('Please provide the "source" and "parent" props for the File');
@@ -207,7 +230,7 @@ trait FileActions
      *
      * @return self
      */
-    public function publish(): self
+    public function publish()
     {
         Media::publish($this->root(), $this->mediaRoot());
         return $this;
@@ -223,7 +246,7 @@ trait FileActions
      * @param string $source
      * @return self
      */
-    public function replace(string $source): self
+    public function replace(string $source)
     {
         return $this->commit('replace', [$this, new Image($source)], function ($file, $upload) {
 
@@ -245,7 +268,7 @@ trait FileActions
      *
      * @return self
      */
-    public function unpublish(): self
+    public function unpublish()
     {
         Media::unpublish($this->parent()->mediaRoot(), $this->filename());
         return $this;

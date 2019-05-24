@@ -139,7 +139,7 @@ class PanelPlugins
      */
     public function id(): string
     {
-        return (string)crc32(implode(array_values($this->files())));
+        return hash('crc32', implode(array_values($this->files())));
     }
 
     /**

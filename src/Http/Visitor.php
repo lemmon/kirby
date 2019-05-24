@@ -84,7 +84,7 @@ class Visitor
      * Returns an array of all accepted languages
      * including their quality and locale
      *
-     * @return Collection
+     * @return Kirby\Toolkit\Collection
      */
     public function acceptedLanguages(): Collection
     {
@@ -150,7 +150,7 @@ class Visitor
     /**
      * Returns a collection of all accepted mime types
      *
-     * @return Collection
+     * @return Kirby\Toolkit\Collection
      */
     public function acceptedMimeTypes(): Collection
     {

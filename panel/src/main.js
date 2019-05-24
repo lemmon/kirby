@@ -25,6 +25,14 @@ import store from "./store/store.js";
  new Vue({
   router,
   store,
+  created() {
+    window.panel.app = this;
+
+    // created plugin callbacks
+    window.panel.plugins.created.forEach(plugin => {
+      plugin(this);
+    });
+  },
   render: h => {
     return h(App);
   },

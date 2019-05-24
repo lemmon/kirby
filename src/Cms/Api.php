@@ -37,7 +37,7 @@ class Api extends BaseApi
         $this->setRequestMethod($method);
         $this->setRequestData($requestData);
 
-        if ($languageCode = $this->requestHeaders('x-language')) {
+        if ($languageCode = $this->language()) {
             $this->kirby->setCurrentLanguage($languageCode);
         }
 
@@ -94,7 +94,7 @@ class Api extends BaseApi
      * @param string $filename Filename
      * @return Kirby\Cms\File|null
      */
-    public function file(string $path = null, string $filename): ?File
+    public function file(string $path = null, string $filename)
     {
         $filename = urldecode($filename);
 
@@ -114,17 +114,13 @@ class Api extends BaseApi
      * Returns the model's object for the given path
      *
      * @param string $path Path to parent model
-     * @return Model|null
+     * @return Kirby\Cms\Model|null
      */
-    public function parent(string $path): ?Model
+    public function parent(string $path)
     {
         $modelType  = $path === 'site' ? 'site' : dirname($path);
         $modelTypes = ['site' => 'site', 'users' => 'user', 'pages' => 'page'];
         $modelName  = $modelTypes[$modelType] ?? null;
-
-        if (Str::endsWith($modelType, '/files') === true) {
-            $modelName = 'file';
-        }
 
         if ($modelName === null) {
             throw new InvalidArgumentException('Invalid file model type');
@@ -137,12 +133,6 @@ class Api extends BaseApi
 
             if ($modelName === 'page') {
                 $modelId = str_replace('+', '/', $modelId);
-            }
-
-            if ($modelName === 'file') {
-                if ($model = $this->file(...explode('/files/', $path))) {
-                    return $model;
-                }
             }
         }
 
@@ -160,7 +150,7 @@ class Api extends BaseApi
      *
      * @return Kirby\Cms\App
      */
-    public function kirby(): App
+    public function kirby()
     {
         return $this->kirby;
     }
@@ -172,7 +162,7 @@ class Api extends BaseApi
      */
     public function language(): ?string
     {
-        return $this->requestHeaders('x-language');
+        return get('language') ?? $this->requestHeaders('x-language');
     }
 
     /**
@@ -181,7 +171,7 @@ class Api extends BaseApi
     * @param string $id Page's id
     * @return Kirby\Cms\Page|null
     */
-    public function page(string $id): ?Page
+    public function page(string $id)
     {
         $id   = str_replace('+', '/', $id);
         $page = $this->kirby->page($id);
@@ -219,7 +209,7 @@ class Api extends BaseApi
      *
      * @return Kirby\Cms\Site
      */
-    public function site(): Site
+    public function site()
     {
         return $this->kirby->site();
     }
@@ -232,7 +222,7 @@ class Api extends BaseApi
      * @param string $id User's id
      * @return Kirby\Cms\User|null
      */
-    public function user(string $id = null): ?User
+    public function user(string $id = null)
     {
         // get the authenticated user
         if ($id === null) {
@@ -257,7 +247,7 @@ class Api extends BaseApi
      *
      * @return Kirby\Cms\Users
      */
-    public function users(): Users
+    public function users()
     {
         return $this->kirby->users();
     }

@@ -1,6 +1,5 @@
 <?php
 
-use Kirby\Cms\App;
 use Kirby\Cms\Html;
 use Kirby\Cms\Url;
 
@@ -130,6 +129,11 @@ return [
 
             if ($tag->kirby()->option('kirbytext.image.figure', true) === false) {
                 return $link($image);
+            }
+
+            // render KirbyText in caption
+            if ($tag->caption) {
+                $tag->caption = [$tag->kirby()->kirbytext($tag->caption, [], true)];
             }
 
             return Html::figure([ $link($image) ], $tag->caption, [
